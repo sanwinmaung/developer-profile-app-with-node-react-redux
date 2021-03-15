@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb://127.0.0.1:27017/node_react_portfolio",
-    "jwtSecret": "swmsecrettoken"
+    "jwtSecret": "swmsecrettoken",
+    "githubClientId": "b89b84226eb0b5b5b1aa",
+    "githubSecret": "2cc89ef767489ddf5f0938469fd5e6d792d509af"
 }
