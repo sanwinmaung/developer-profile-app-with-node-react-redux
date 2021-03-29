@@ -166,7 +166,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 // @desc    Comment on a post
 // @access  Private
 router.post(
-  '/comments/:id',
+  '/comment/:id',
   [auth, [check('text', 'Text is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
@@ -204,27 +204,24 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     const post = await Post.findById(req.params.id);
 
     // Pull out comment
-    const comment = post.comments.find(
+    const deleteComment = post.comments.find(
       (comment) => comment.id === req.params.comment_id
     );
 
     // Make sure comment exists
-    if (!comment) {
+    if (!deleteComment) {
       return res.status(404).json({ msg: 'Comment does not exit' });
     }
 
-    console.log(comment.user.toString());
-    console.log(req.user.id);
-
     // Check user
-    if (comment.user.toString() !== req.user.id) {
+    if (deleteComment.user.toString() !== req.user.id) {
       return res.status(404).json({ msg: 'User not authorized' });
     }
 
     //Get remove index
     const removeIndex = post.comments
-      .map((comment) => comment.user.toString())
-      .indexOf(req.user.id);
+      .map((comment) => comment._id)
+      .indexOf(deleteComment._id);
 
     post.comments.splice(removeIndex, 1);
 
